@@ -1,0 +1,5 @@
+GPG_PW='{{ backup_password }}'
+TARGET='{{ backup_target }}'
+SOURCE='{{ backup_src }}'
+MAX_FULLBKP_AGE=1M
+DUPL_PARAMS="$DUPL_PARAMS --full-if-older-than $MAX_FULLBKP_AGE " 

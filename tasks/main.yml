@@ -1,0 +1,31 @@
+---
+
+# install duply etc
+
+- name: add duplicity-team ppa
+  apt_repository: repo='ppa:duplicity-team/ppa'
+  tags: [ duply ]
+
+- name: install duply packages
+  apt: pkg={{ item }} state=present
+  tags: [ duply ]
+  with_items:
+  - duplicity
+  - duply
+  - python-paramiko
+  - python-boto
+
+# ensure configuration is there
+
+- name: ensure profile directory exists
+  file: path={{ duply_config_location }} state=directory owner={{ backing_up_user }} mode=0700 recurse=yes
+- name: place config script
+  template: src=duply.conf.j2 dest={{ duply_config_location }}/conf owner={{ backing_up_user }} mode=0640
+- name: place pre script
+  template: src={{ pre_script }} dest={{ duply_config_location }}/pre owner={{ backing_up_user }} mode=0640
+  tags: [ duply_remaining ]
+
+# setup cron job
+- name: setup cron
+  cron: user={{ backing_up_user }} name="run duply for profile {{ duply_profile }}" special_time=hourly job="duply {{ duply_profile }} backup 1> /dev/null"
+  tags: [ duply_remaining ]
