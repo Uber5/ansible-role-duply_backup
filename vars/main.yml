@@ -1,3 +1,4 @@
 ---
 duply_profile: default
 duply_config_location: "/home/{{ backing_up_user }}/.duply/{{ duply_profile }}"
+backup_target_user: ''

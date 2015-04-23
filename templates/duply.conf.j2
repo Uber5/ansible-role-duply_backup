@@ -1,4 +1,11 @@
+# {{ ansible_managed }}
 GPG_PW='{{ backup_password }}'
+
+{% if backup_target_user %}
+TARGET_USER='{{ backup_target_user }}'
+TARGET_PASS='{{ backup_target_pass }}'
+{% endif %}
+
 TARGET='{{ backup_target }}'
 SOURCE='{{ backup_src }}'
 MAX_FULLBKP_AGE=1M
