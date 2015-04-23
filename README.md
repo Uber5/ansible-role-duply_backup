@@ -1,4 +1,13 @@
+# What?
+
+This is an [Ansible](http://docs.ansible.com/) role to setup backups via
+[Duply](http://duply.net/).
+
 # How to Use
+
+## With a simple duply target (e.g. scp)
+
+In your playbook:
 
 ```
 - hosts: some-hosts
@@ -11,17 +20,23 @@
       backup_target: scp://backups@my-backup-server.com/user1
 ```
 
-The backup target can be a S3 bucket, assuming 'my-backups' being a S3 bucket:
+## With Amazon S3
+
+In your playbook:
 
 ```
-TARGET_USER='some-s3-key'
-TARGET_PASS='some-s3-secret'
-TARGET='s3://s3-ap-southeast-2.amazonaws.com/my-backups/some-folder'
+    - role: duply_backup
+      backing_up_user: user1
+      pre_script: templates/testing/duply_pre.sh.j2
+      backup_password: topSecretPassword
+      backup_src: /home/user1/important-stuff
+      backup_target: s3://s3-ap-southeast-2.amazonaws.com/backups-bucket/user1
+      backup_target_user: 's3-id'
+      backup_target_pass: 's3-secret'
 ```
 
-# Setup Bucket Policy on S3
-
-This policy works, but may be too liberal:
+The bucket needs an appropriate policy. The following works, but may be more
+liberal than necessary:
 
 ```
 {
@@ -31,19 +46,19 @@ This policy works, but may be too liberal:
       "Sid": "",
       "Effect": "Allow",
       "Principal": {
-        "AWS": "arn:aws:iam::123:user/backups-hetz4"
+        "AWS": "arn:aws:iam::123:user/backups-myhost"
       },
       "Action": "s3:*",
-      "Resource": "arn:aws:s3:::backups-hetz4"
+      "Resource": "arn:aws:s3:::backups-bucket"
     },
     {
       "Sid": "",
       "Effect": "Allow",
       "Principal": {
-        "AWS": "arn:aws:iam::123:user/backups-hetz4"
+        "AWS": "arn:aws:iam::123:user/backups-myhost"
       },
       "Action": "s3:*",
-      "Resource": "arn:aws:s3:::backups-hetz4/*"
+      "Resource": "arn:aws:s3:::backups-bucket/*"
     }
   ]
 }
