@@ -3,6 +3,9 @@
 This is an [Ansible](http://docs.ansible.com/) role to setup backups via
 [Duply](http://duply.net/).
 
+TODO: Currently (duplicity version 0.7.02), it seems necessary to patch duplicity as per
+https://bugs.launchpad.net/duplicity/+bug/1434702
+
 # How to Use
 
 ## With a simple duply target (e.g. scp)
