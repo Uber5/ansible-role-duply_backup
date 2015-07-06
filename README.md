@@ -3,8 +3,8 @@
 This is an [Ansible](http://docs.ansible.com/) role to setup backups via
 [Duply](http://duply.net/).
 
-TODO: Currently (duplicity version 0.7.02), it seems necessary to patch duplicity as per
-https://bugs.launchpad.net/duplicity/+bug/1434702
+TODO: duply config may have to be adjusted as described here:
+https://raim.codingfarm.de/blog/2015/03/12/backup-with-duply-to-amazon-s3-backendexception-no-connection-to-backend/
 
 # How to Use
 
